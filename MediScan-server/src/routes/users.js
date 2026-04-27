@@ -1,11 +1,12 @@
 const express = require('express');
 const { collections, ObjectId } = require('../config/db');
 const { verifyToken, verifyAdmin } = require('../middlewares/auth');
+const { requireFields, validateEmailParam, validateObjectIdParam } = require('../middlewares/validate');
 
 const router = express.Router();
 
-// GET /users (public as per current behavior)
-router.get('/users', async (req, res, next) => {
+// GET /users (admin)
+router.get('/users', verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const users = await userCollection.find().toArray();
@@ -13,8 +14,8 @@ router.get('/users', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// GET /users/:email
-router.get('/users/:email', async (req, res, next) => {
+// GET /users/:email (admin)
+router.get('/users/:email', validateEmailParam('email'), verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const users = await userCollection.find({ email: req.params.email }).toArray();
@@ -23,7 +24,7 @@ router.get('/users/:email', async (req, res, next) => {
 });
 
 // POST /users
-router.post('/users', async (req, res, next) => {
+router.post('/users', requireFields(['name', 'email', 'photoURL', 'bloodGroup', 'district', 'upazila', 'uid', 'isAdmin', 'active']), async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const result = await userCollection.insertOne(req.body);
@@ -32,7 +33,7 @@ router.post('/users', async (req, res, next) => {
 });
 
 // PATCH /users/:email (JWT required)
-router.patch('/users/:email', verifyToken, async (req, res, next) => {
+router.patch('/users/:email', validateEmailParam('email'), verifyToken, requireFields(['name', 'bloodGroup', 'district', 'upazila', 'photoURL']), async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const email = req.params.email;
@@ -51,7 +52,7 @@ router.patch('/users/:email', verifyToken, async (req, res, next) => {
 });
 
 // PATCH /users/admin/:id (admin)
-router.patch('/users/admin/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+router.patch('/users/admin/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const id = req.params.id;
@@ -64,7 +65,7 @@ router.patch('/users/admin/:id', verifyToken, verifyAdmin, async (req, res, next
 });
 
 // PATCH /users/active/:id (admin)
-router.patch('/users/active/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+router.patch('/users/active/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const id = req.params.id;
@@ -77,7 +78,7 @@ router.patch('/users/active/:id', verifyToken, verifyAdmin, async (req, res, nex
 });
 
 // GET /users/admin/:email
-router.get('/users/admin/:email', async (req, res, next) => {
+router.get('/users/admin/:email', validateEmailParam('email'), async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const email = req.params.email;
@@ -87,7 +88,7 @@ router.get('/users/admin/:email', async (req, res, next) => {
 });
 
 // GET /users/active/:email
-router.get('/users/active/:email', async (req, res, next) => {
+router.get('/users/active/:email', validateEmailParam('email'), async (req, res, next) => {
   try {
     const { userCollection } = collections();
     const email = req.params.email;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -6,34 +6,25 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 const Reservations = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: initialReservations = [], refetch, status } = useQuery({
-        queryKey: 'payments',
+    const { data: reservations = [], refetch, isPending, isError } = useQuery({
+        queryKey: ['payments'],
         queryFn: async () => {
             const res = await axiosSecure.get('/payments');
             return res.data;
         },
     });
 
-    const [reservations, setReservations] = useState(initialReservations);
     const [searchEmail, setSearchEmail] = useState('');
     const [testReportLink, setTestReportLink] = useState('');
     const [selectedReservationId, setSelectedReservationId] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        
-        setReservations(initialReservations);
-    }, [initialReservations]);
-
-    const handleSearch = () => {
-        const filteredReservations = initialReservations.filter(reservation =>
-            reservation.email.toLowerCase().includes(searchEmail.toLowerCase())
-        );
-        setReservations(filteredReservations);
-    };
+    const filteredReservations = useMemo(() => reservations.filter((reservation) =>
+        reservation.email.toLowerCase().includes(searchEmail.toLowerCase())
+    ), [reservations, searchEmail]);
 
     const handleCancelReservation = async (reservationId) => {
-        
-        Swal.fire({
+        const result = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             icon: 'warning', 
@@ -41,42 +32,33 @@ const Reservations = () => {
             confirmButtonColor: '#3085d6', 
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, cancel it!'
-        }).then( async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    await axiosSecure.delete(`/payments/${reservationId}`);
-                    refetch();
-                    Swal.fire(
-                        'Cancelled!',
-                        'Your appointment has been cancelled.',
-                        'success'
-                    )
-                } catch (error) {
-                    console.log(error)
-                }
-            }
-        })
-        refetch();
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        try {
+            await axiosSecure.delete(`/payments/${reservationId}`);
+            await refetch();
+            Swal.fire('Cancelled!', 'Your appointment has been cancelled.', 'success');
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     const handleSubmitResult = async (reservationId) => {
         setSelectedReservationId(reservationId);
-        document.getElementById('my_modal_2').showModal();
+        setTestReportLink('');
+        setIsModalOpen(true);
     };
 
     const handleSubmit= async ({ reservationId, testReportLink }) => {
-        console.log(testReportLink);
-        console.log(reservationId);
-
         try {
             await axiosSecure.patch(`/payments/${reservationId}`, { reportLink: testReportLink });
-            refetch();
-            Swal.fire(
-                'Submitted!',
-                'Your test report has been submitted.',
-                'success'
-            )
-            document.getElementById('my_modal_2').close();
+            await refetch();
+            setIsModalOpen(false);
+            Swal.fire('Submitted!', 'Your test report has been submitted.', 'success');
         } catch (error) {
             console.log(error)
         }
@@ -86,7 +68,7 @@ const Reservations = () => {
     return (
         <div>
              {/* Modal */}
-             <dialog id="my_modal_2" className="modal">
+             <dialog className="modal" open={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <div className="modal-box p-0 max-w-screen-sm">
                 <div className="p-10">
                     <div className="form-control">
@@ -108,7 +90,7 @@ const Reservations = () => {
                         >Submit</button>
                         {/* cancel button */}
                         <button className="btn" 
-                        onClick={() => document.getElementById('my_modal_2').close()}
+                        onClick={() => setIsModalOpen(false)}
                         >Cancel</button>
                     </div>
                 </div>
@@ -129,7 +111,7 @@ const Reservations = () => {
                     className="border rounded-md p-2 mr-2"
                 />
                 <button
-                    onClick={handleSearch}
+                    onClick={() => setSearchEmail(searchEmail.trim())}
                     className="bg-blue-500 text-white rounded-md px-4 py-2"
                 >
                     Search
@@ -150,22 +132,22 @@ const Reservations = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {status === 'loading' && (
+                        {isPending && (
                             <tr>
                                 <td colSpan="6" className="text-center">
                                     Loading...
                                 </td>
                             </tr>
                         )}
-                        {status === 'error' && (
+                        {isError && (
                             <tr>
                                 <td colSpan="6" className="text-center">
                                     Error fetching data
                                 </td>
                             </tr>
                         )}
-                        {status === 'success' &&
-                            reservations.map((reservation, index) => (
+                        {!isPending && !isError &&
+                            filteredReservations.map((reservation, index) => (
                                 <tr key={reservation._id}>
                                     <td>{index + 1}</td>
                                     <td>{reservation._id}</td>

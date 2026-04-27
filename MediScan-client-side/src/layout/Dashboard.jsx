@@ -12,11 +12,11 @@ const Dashboard = () => {
     return (
         <div className="flex">
             {/* left side bar */}
-            <div className="flex h-screen flex-col justify-between border-e bg-base-200">
+            <div className="flex h-screen flex-col justify-between border-e border-base-300 bg-base-200 text-base-content">
                 <div className="px-4 py-6 ">
                     {/* top logo */}
                     <span
-                    className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 font-bold text-gray-600"
+                    className="grid h-10 w-32 place-content-center rounded-lg bg-base-100 font-bold text-base-content"
                     >
                     MediScan
                     </span>
@@ -66,12 +66,13 @@ const Dashboard = () => {
                 </div>
 
                  {/* user info */}
-                <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 ">
+                <div className="sticky inset-x-0 bottom-0 border-t border-base-300">
                     <div className="flex items-center gap-2 bg-base-200 p-4">
                     <img
                         alt="Man"
                         src={user.photoURL || "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"}
                         className="h-10 w-10 rounded-full object-cover"
+                        loading='lazy'
                     />
 
                     <div>
@@ -88,7 +89,7 @@ const Dashboard = () => {
 
                 
             {/* dashboard content */}
-            <div className="flex-1 p-10">
+            <div className="flex-1 bg-base-100 p-10 text-base-content">
                     <Outlet></Outlet>
             </div>
         </div>

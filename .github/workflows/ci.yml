@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: MediScan-client-side
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: MediScan-client-side/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint client
+        run: npm run lint
+
+      - name: Build client
+        run: npm run build
+
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: MediScan-server
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: MediScan-server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint server
+        env:
+          ACCESS_TOKEN_SECRET: ci-secret
+          MONGO_URI: mongodb://localhost:27017/mediscan
+        run: npm run lint
+
+      - name: Test server
+        env:
+          ACCESS_TOKEN_SECRET: ci-secret
+          MONGO_URI: mongodb://localhost:27017/mediscan
+        run: npm test

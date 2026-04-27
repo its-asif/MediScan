@@ -1,6 +1,7 @@
 const express = require('express');
 const { collections, ObjectId } = require('../config/db');
 const { verifyToken, verifyAdmin } = require('../middlewares/auth');
+const { requireFields, validateObjectIdParam } = require('../middlewares/validate');
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.get('/tests', async (req, res, next) => {
 });
 
 // GET /tests/:id
-router.get('/tests/:id', async (req, res, next) => {
+router.get('/tests/:id', validateObjectIdParam('id'), async (req, res, next) => {
   try {
     const { testCollection } = collections();
     const id = req.params.id;
@@ -25,7 +26,7 @@ router.get('/tests/:id', async (req, res, next) => {
 });
 
 // POST /tests (admin)
-router.post('/tests', verifyToken, verifyAdmin, async (req, res, next) => {
+router.post('/tests', verifyToken, verifyAdmin, requireFields(['name', 'price', 'slots', 'details', 'image', 'date']), async (req, res, next) => {
   try {
     const { testCollection } = collections();
     const result = await testCollection.insertOne(req.body);
@@ -34,7 +35,7 @@ router.post('/tests', verifyToken, verifyAdmin, async (req, res, next) => {
 });
 
 // DELETE /tests/:id (admin)
-router.delete('/tests/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+router.delete('/tests/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { testCollection } = collections();
     const id = req.params.id;
@@ -48,8 +49,8 @@ router.delete('/tests/:id', verifyToken, verifyAdmin, async (req, res, next) => 
   } catch (e) { next(e); }
 });
 
-// PATCH /tests/:id (kept unauthenticated to avoid endpoint behavior change)
-router.patch('/tests/:id', async (req, res, next) => {
+// PATCH /tests/:id (admin)
+router.patch('/tests/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, requireFields(['name', 'price', 'slots', 'details', 'image', 'date']), async (req, res, next) => {
   try {
     const { testCollection } = collections();
     const id = req.params.id;
@@ -73,8 +74,8 @@ router.patch('/tests/:id', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// PATCH /tests/slots/:id (kept unauthenticated)
-router.patch('/tests/slots/:id', async (req, res, next) => {
+// PATCH /tests/slots/:id (admin)
+router.patch('/tests/slots/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { testCollection } = collections();
     const id = req.params.id;

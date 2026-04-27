@@ -1,7 +1,8 @@
 import axios from "axios";
+import { getApiBaseUrl } from "../config/api";
 
 const axiosPublic = axios.create({
-    baseURL: 'https://medi-scan-server.vercel.app/',
+    baseURL: getApiBaseUrl(),
 });
 
 const useAxiosPublic = () => {

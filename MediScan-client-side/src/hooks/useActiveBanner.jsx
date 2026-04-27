@@ -11,6 +11,7 @@ const useActiveBanner = () => {
             return res.data;
         },
     })
+    console.log(activeBanner);
 
     return [activeBanner, refetch, activeBannerLoading];
 };

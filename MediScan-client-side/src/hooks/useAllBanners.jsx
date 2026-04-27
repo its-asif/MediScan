@@ -9,9 +9,19 @@ const useAllBanners = () => {
             queryKey: ['banners'],
             queryFn: async () => {
                 const res = await axiosSecure.get('/banners');
-                return res.data;
+                const data = res.data.map(banner => {
+                    return {
+                        _id: banner._id,
+                        title: banner.title,
+                        couponCode: banner.couponCode,
+                        discountRate: banner.discountRate,
+                        active: banner.active,
+                    }    
+                })
+                // return res.data;
             },
         })
+        console.log(banners);
 
     return [banners, refetch, bannersLoading];
 };

@@ -57,10 +57,10 @@ const UserList = () => {
             <dialog id="my_modal_2" className="modal">
             <div className="modal-box p-0">
             <div className="bg-white shadow-lg rounded-2xl w-full mx-auto  dark:bg-gray-800">
-                <img alt="profil" src="https://img.freepik.com/free-vector/halftone-background-with-circles_23-2148907689.jpg?w=740&t=st=1700904260~exp=1700904860~hmac=43bb5c07a0cf49886d3b90b9968658932e7a07f42d27d2cf666ac32b05a697fd" className="w-full mb-4 rounded-t-lg h-36"/>
+                <img loading='lazy' alt="profil" src="https://img.freepik.com/free-vector/halftone-background-with-circles_23-2148907689.jpg?w=740&t=st=1700904260~exp=1700904860~hmac=43bb5c07a0cf49886d3b90b9968658932e7a07f42d27d2cf666ac32b05a697fd" className="w-full mb-4 rounded-t-lg h-36"/>
                 <div className="flex flex-col items-center justify-center p-4 -mt-16">
                     <div className="relative block">
-                        <img alt="profile" src={viewUser?.photoURL} className="mx-auto object-cover rounded-full h-20 w-20  border-2 border-white dark:border-gray-800"/>
+                        <img loading='lazy' alt="profile" src={viewUser?.photoURL} className="mx-auto object-cover rounded-full h-20 w-20  border-2 border-white dark:border-gray-800"/>
                     </div>
                     <p className="mt-2 text-2xl font-medium text-gray-800 dark:text-white">
                         {viewUser?.name}

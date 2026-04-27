@@ -28,6 +28,7 @@ import HealthTipsBlog from "../pages/others/HealthTipsBlog";
 import FAQPage from "../pages/others/FAQPage";
 import Feedback from "../pages/others/Feedback";
 import SymptomChecker from "../pages/others/SymptomChecker";
+import { getApiBaseUrl } from "../config/api";
 
 export const router = createBrowserRouter([
 {
@@ -35,7 +36,7 @@ export const router = createBrowserRouter([
     element: <Main></Main>,
     children: [
     {
-        path: "/",
+        index: true,
         element: <Home></Home>,
     },
     {
@@ -130,7 +131,7 @@ export const router = createBrowserRouter([
     {
         path: "/dashboard/editTest/:id",
         element: <AdminRoutes><EditTest></EditTest></AdminRoutes>,
-        loader : ({params}) => fetch(`https://medi-scan-server.vercel.app/tests/${params.id}`)
+        loader : ({params}) => fetch(`${getApiBaseUrl()}/tests/${params.id}`)
     }
     ],
 }

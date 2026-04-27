@@ -3,11 +3,12 @@
 const SectionTitle = ({heading, subHeading}) => {
     return (
         <div>
-            <div className="max-w-4xl mx-auto text-center mt-20 mb-5">
-                <h2 className="text-3xl font-extrabold leading-9 sm:text-4xl sm:leading-10">
+            <div className="mediscan-shell text-center mt-20 mb-8">
+                <span className="mediscan-pill">Featured experience</span>
+                <h2 className="mediscan-heading mt-6">
                     {heading}
                 </h2>
-                <p className="mt-3 text-base leading-7 sm:mt-4">
+                <p className="mediscan-subheading mx-auto">
                     {subHeading}
                 </p>
             </div>

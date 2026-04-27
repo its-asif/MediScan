@@ -1,6 +1,7 @@
 const express = require('express');
 const { collections, ObjectId } = require('../config/db');
 const { verifyToken, verifyAdmin } = require('../middlewares/auth');
+const { requireFields, validateObjectIdParam } = require('../middlewares/validate');
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get('/banners/active', async (req, res, next) => {
 });
 
 // POST /banners (admin)
-router.post('/banners', verifyToken, verifyAdmin, async (req, res, next) => {
+router.post('/banners', verifyToken, verifyAdmin, requireFields(['title', 'text', 'coupon_code', 'discount_rate', 'image']), async (req, res, next) => {
   try {
     const { bannerCollection } = collections();
     const result = await bannerCollection.insertOne(req.body);
@@ -32,7 +33,7 @@ router.post('/banners', verifyToken, verifyAdmin, async (req, res, next) => {
 });
 
 // PATCH /banners/active/:id (admin)
-router.patch('/banners/active/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+router.patch('/banners/active/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, async (req, res, next) => {
   const { bannerCollection } = collections();
   const id = req.params.id;
   const filter = { _id: new ObjectId(id) };
@@ -48,7 +49,7 @@ router.patch('/banners/active/:id', verifyToken, verifyAdmin, async (req, res, n
 });
 
 // DELETE /banners/:id (admin)
-router.delete('/banners/:id', verifyToken, verifyAdmin, async (req, res, next) => {
+router.delete('/banners/:id', validateObjectIdParam('id'), verifyToken, verifyAdmin, async (req, res, next) => {
   try {
     const { bannerCollection } = collections();
     const id = req.params.id;

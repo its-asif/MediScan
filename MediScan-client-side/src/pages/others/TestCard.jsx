@@ -13,7 +13,8 @@ const TestCard = ({test}) => {
     return (
         <div>
             <div className="card card-compact max-w-96 bg-base-100 shadow-xl">
-                <figure><img src={image} alt="Shoes" className="w-full h-96"/></figure>
+                <figure><img src={image} alt="Shoes" className="w-full h-96 object-cover" 
+                 loading='lazy'/></figure>
                 <div className="card-body text-left">
                     <h2 className="card-title">{name}</h2>
                     <p>{details}</p>

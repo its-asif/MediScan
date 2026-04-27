@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import SectionTitle from '../shared/SectionTitle';
 import { Helmet } from 'react-helmet-async';
-import TestCard from './TestCard';
+// import TestCard from './TestCard';
+// lazy loading
+const TestCard = React.lazy(() => import('./TestCard'));
 import useTests from '../../hooks/UseTests';
 
 const ITEMS_PER_PAGE = 6;
@@ -50,7 +52,7 @@ const AllTestPage = () => {
                 subHeading={'Discover a wide range of diagnostic tests tailored for your health needs'}
             ></SectionTitle>
 
-            {/* Search by Date */}
+        {/* Search by Date */}
             <div className='mb-4'>
                 <label className='label'>
                     <span className='label-text'>Search by Date</span>
@@ -64,12 +66,17 @@ const AllTestPage = () => {
                 <input type='button' onClick={() => setSearchDate('')} className='btn mx-4 ' value={'clear'} />
             </div>
 
+        {/* Show Cards */}
             <div className='grid lg:grid-cols-3 gap-10 mb-5'>
                 {currentTests.map((test) => (
-                    <TestCard key={test._id} test={test}></TestCard>
+                    <Suspense fallback={<p>Test is loading</p>} key={test._id}>
+                        <TestCard key={test._id} test={test}></TestCard>
+                    </Suspense>
+                    
                 ))}
             </div>
-
+        
+        {/* pagination */}
             <div className='flex justify-center space-x-2'>
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button

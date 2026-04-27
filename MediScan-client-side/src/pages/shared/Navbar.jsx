@@ -1,15 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../provider/AuthProvider';
 import useAdmin from '../../hooks/useAdmin';
 import useActiveStatus from '../../hooks/useActiveStatus';
 import Swal from 'sweetalert2';
+import { useTheme } from '../../provider/ThemeProvider';
 
 const Navbar = () => {
     const {user, logout, loading} = useContext(AuthContext);
     // const [cart] = useCart();
     const [isAdmin] = useAdmin();
     const [isActive] = useActiveStatus();
+    const theme = useTheme();
     // console.log("is active ? ",isActive);
 
     const handleLogout = () => {
@@ -56,46 +58,50 @@ const Navbar = () => {
     }
 
     return (
-        <div>
-            <div className="navbar fixed top-0 z-10 bg-black text-warning max-w-screen-xl">
-                <div className="navbar-start">
-                    <div className="dropdown">
-                        <label tabIndex={0} className="btn btn-ghost lg:hidden">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-                        </label>
-                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 hover:text-white rounded-box w-52">
-                        {navOptions}
-                    </ul>
+        <header className="sticky top-0 z-50 border-b border-base-300/70 bg-base-100/85 backdrop-blur-xl">
+            <div className="mediscan-shell">
+                <div className="navbar px-0 text-base-content">
+                    <div className="navbar-start gap-3">
+                        <div className="dropdown">
+                            <label tabIndex={0} className="btn btn-ghost border border-base-300 bg-base-200 text-base-content lg:hidden">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+                            </label>
+                            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-4 z-[1] w-64 rounded-3xl border border-base-300 bg-base-100 p-3 shadow-2xl">
+                                {navOptions}
+                            </ul>
+                        </div>
+                        <Link to="/" className="group inline-flex items-center gap-3 rounded-full border border-base-300 bg-base-200 px-4 py-2">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-primary-content font-black shadow-lg shadow-primary/20">M</span>
+                            <span className="text-left leading-tight">
+                                <span className="block text-sm font-semibold uppercase tracking-[0.24em] text-primary">MediScan</span>
+                                <span className="block text-xs text-base-content/70">Diagnostic care, simplified</span>
+                            </span>
+                        </Link>
                     </div>
-                    <a className="btn btn-ghost normal-case text-xl lg:text-4xl lg:font-bold lg:ml-10  ">MediScan</a>
-                </div>
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
-                        {navOptions}
-                    </ul>
-                </div>
-                <div className="navbar-end">
-                {/* <label className="flex cursor-pointer gap-2">
-                    <input
-            type="checkbox"
-            checked={isdark}
-            onChange={() => setIsdark(!isdark)}
-          />
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-                    <input type="checkbox" checked={isdark} onChange={() => setIsdark(!isdark)} value="synthwave" className="toggle theme-controller"/>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </label> */}
-                
-                {
-                    user ? <>
-                    <button onClick={handleLogout} className='btn btn-warning'>Log out</button>
-                    </> : <>
-                        <li className='btn '><Link to='/login'>Login</Link></li>
-                    </>
-                }
+
+                    <div className="navbar-center hidden lg:flex">
+                        <ul className="menu menu-horizontal items-center gap-1 px-1 text-sm font-medium text-base-content">
+                            {navOptions}
+                        </ul>
+                    </div>
+
+                    <div className="navbar-end gap-3">
+                        <button onClick={theme?.toggleTheme} className="btn border border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                            {theme?.isDark ? 'Light mode' : 'Dark mode'}
+                        </button>
+                        {user ? (
+                            <button onClick={handleLogout} className="btn border-0 bg-primary text-primary-content shadow-lg shadow-primary/20 hover:bg-primary-focus">
+                                Log out
+                            </button>
+                        ) : (
+                            <Link to="/login" className="btn border border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                                Login
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </header>
     );
 };
 

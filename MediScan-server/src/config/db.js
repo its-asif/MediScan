@@ -3,11 +3,9 @@ const config = require('./env');
 
 let client;
 
-const uri = `mongodb+srv://${config.dbUser}:${config.dbPass}@cluster0.gf8ipgr.mongodb.net/?retryWrites=true&w=majority`;
-
 function getClient() {
   if (!client) {
-    client = new MongoClient(uri, {
+    client = new MongoClient(config.mongoUri, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
@@ -20,10 +18,15 @@ function getClient() {
 
 async function connectDB() {
   const cli = getClient();
-  if (!cli.topology?.isConnected()) {
-    await cli.connect();
-  }
+  await cli.connect();
   return cli;
+}
+
+async function closeDB() {
+  if (client) {
+    await client.close();
+    client = undefined;
+  }
 }
 
 function getDb() {
@@ -43,6 +46,7 @@ function collections() {
 
 module.exports = {
   connectDB,
+  closeDB,
   getDb,
   collections,
   ObjectId,

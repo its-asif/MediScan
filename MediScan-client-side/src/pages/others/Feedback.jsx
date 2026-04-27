@@ -30,7 +30,7 @@ const Feedback = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="min-h-screen bg-base-200 text-base-content">
       <Helmet>
         <title>MediScan | Send Feedback</title>
       </Helmet>
@@ -42,16 +42,16 @@ const Feedback = () => {
 
       <div className="container mx-auto mt-8">
         <div className="grid grid-cols-1  gap-8">
-          <div className="bg-white p-8 rounded shadow-md w-1/2 mx-auto ">
-            <h2 className="text-3xl font-bold mb-4 text-gray-800">Feedback Form</h2>
-            <p className="text-gray-700 mb-4">
+          <div className="mx-auto w-full max-w-3xl rounded-[1.75rem] border border-base-300 bg-base-100 p-8 shadow-xl">
+            <h2 className="mb-4 text-3xl font-bold text-base-content">Feedback Form</h2>
+            <p className="mb-4 text-base-content/75">
               We value your feedback! Share your thoughts, suggestions, or any comments you have about our services.
             </p>
 
             {/* Feedback Form */}
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700">Your Name</label>
+                <label htmlFor="name" className="mb-2 block text-sm font-medium text-base-content/75">Your Name</label>
                 <input
                   type="text"
                   id="name"
@@ -64,7 +64,7 @@ const Feedback = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700">Your Email</label>
+                <label htmlFor="email" className="mb-2 block text-sm font-medium text-base-content/75">Your Email</label>
                 <input
                   type="email"
                   id="email"
@@ -77,7 +77,7 @@ const Feedback = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="feedback" className="block text-gray-700">Your Feedback</label>
+                <label htmlFor="feedback" className="mb-2 block text-sm font-medium text-base-content/75">Your Feedback</label>
                 <textarea
                   id="feedback"
                   name="feedback"

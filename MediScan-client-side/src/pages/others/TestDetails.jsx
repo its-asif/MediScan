@@ -46,6 +46,7 @@ const TestDetails = () => {
                     alt="Home"
                     src={test.image}
                     className="h-96 w-fit rounded-md object-cover"
+                    loading='lazy'
                 />
 
                 <div className="mt-2 mx-10">

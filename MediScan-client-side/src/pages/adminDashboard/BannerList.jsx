@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useAllBanners from "../../hooks/useAllBanners";
+// const useAllBanners = React.lazy(() => import('../../hooks/useAllBanners'));
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -7,8 +9,10 @@ import Swal from "sweetalert2";
 
 const BannerList = () => {
     const axiosSecure = useAxiosSecure();
+    const [ allbanner, setAllbanner ] = useState([]);
     const [banners, refetch, bannersLoading] = useAllBanners();
-
+    
+    
     const handleBannerStatus = async (id) => {
         axiosSecure.patch(`/banners/active/${id}`)
         .then(res => {

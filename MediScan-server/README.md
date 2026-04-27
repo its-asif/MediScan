@@ -15,10 +15,11 @@ Copy `.env.example` to `.env` and fill values:
 ```
 PORT=5000
 ACCESS_TOKEN_SECRET=replace-with-strong-random-secret
-DB_USER=yourMongoDBUsername
-DB_PASS=yourMongoDBPassword
+MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/mediScanDB?retryWrites=true&w=majority
 STRIPE_SECRET_KEY=sk_live_or_test_key
 ```
+
+If you are still using the older credential-based setup locally, the server will also build the Mongo URI from `DB_USER` and `DB_PASS`.
 
 ## Key Collections
 - `tests`

@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('./src/app');
-const { connectDB } = require('./src/config/db');
+const { connectDB, closeDB } = require('./src/config/db');
 const config = require('./src/config/env');
 
 const server = http.createServer(app);
@@ -19,8 +19,14 @@ async function start() {
 
 function shutdown(signal) {
   console.log(`Received ${signal}. Shutting down...`);
-  server.close(() => {
-    process.exit(0);
+  server.close(async () => {
+    try {
+      await closeDB();
+    } catch (err) {
+      console.error('Failed to close Mongo client:', err);
+    } finally {
+      process.exit(0);
+    }
   });
 }
 

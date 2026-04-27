@@ -20,7 +20,6 @@ const HealthTipsBlog = () => {
             description:
                 'Explore the importance of regular physical activity in maintaining a healthy lifestyle. Find tips on creating a personalized exercise routine.',
             image: 'https://img.freepik.com/free-vector/family-health-sport-fitness-flat-horizontal-composition-with-grandparents-parents-kid-exercising-with-barbells-outdoor-illustration_1284-29281.jpg?w=826&t=st=1701189691~exp=1701190291~hmac=785de9a5a392bad3b47229def07833118b42814450221d8c0b3dd517e1d16bc1',
-            date: '2022-10-15',
             year: '2022',
             date: 'OCT 15',
             link: '/health-tips/staying-active',
@@ -30,7 +29,6 @@ const HealthTipsBlog = () => {
             description:
                 'Learn about the connection between mindfulness practices and mental well-being. Discover techniques for managing stress and improving mental health.',
             image: 'https://img.freepik.com/free-vector/young-man-practicing-yoga-exercises-mental-body-health_74855-20437.jpg?w=740&t=st=1701189780~exp=1701190380~hmac=b9e5016d65c44fd35a4e5ccef96eeab02543291b278cd875600642147e963775',
-            date: '2022-10-20',
             year: '2022',
             date: 'Sep 23',
             link: '/health-tips/mindfulness-mental-health',
@@ -40,7 +38,6 @@ const HealthTipsBlog = () => {
             description:
                 'Explore the impact of quality sleep on overall health and well-being. Find tips on improving sleep hygiene and creating a restful bedtime routine.',
             image: 'https://img.freepik.com/free-vector/sleep-analysis-isometric-composition_1284-23930.jpg?w=360&t=st=1701189832~exp=1701190432~hmac=7c9a76009fba2e4824c2b22dbf4dadb4118eec133c9f9e4571a5554f961b15dd',
-            date: '2022-10-25',
             year: '2023',
             date: 'Feb 13',
             link: '/health-tips/quality-sleep',
@@ -60,8 +57,8 @@ const HealthTipsBlog = () => {
             <div className="grid lg:grid-cols-2 gap-10 m-20">
                 {/* Health Tip */}
                 {
-                    healthTipsData.map((healthTip, index) => (
-                        <article className="flex bg-white transition shadow-xl p-4 hover:border-2 " >
+                    healthTipsData.map((healthTip) => (
+                        <article key={healthTip.link} className="flex bg-white transition shadow-xl p-4 hover:border-2 " >
                             <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
                                 <div
                                     className="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900"
@@ -77,6 +74,7 @@ const HealthTipsBlog = () => {
                                     alt="Healthy Eating"
                                     src={healthTip.image}
                                     className="aspect-square h-full w-full object-cover"
+                                    loading='lazy'
                                 />
                             </div>
 

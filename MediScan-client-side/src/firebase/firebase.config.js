@@ -5,14 +5,16 @@ import { getStorage } from "firebase/storage";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+const env = import.meta.env;
+const pick = (...values) => values.find((value) => typeof value === 'string' && value.trim())?.trim();
+
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_apiKey,
-    authDomain: import.meta.env.VITE_authDomain,
-    projectId: import.meta.env.VITE_projectId,
-    storageBucket: import.meta.env.VITE_storageBucket,
-    messagingSenderId: import.meta.env.VITE_messagingSenderId,
-    appId: import.meta.env.VITE_appId,
-    storageBucket: '',
+    apiKey: pick(env.VITE_FIREBASE_API_KEY, env.VITE_apiKey),
+    authDomain: pick(env.VITE_FIREBASE_AUTH_DOMAIN, env.VITE_authDomain),
+    projectId: pick(env.VITE_FIREBASE_PROJECT_ID, env.VITE_projectId),
+    storageBucket: pick(env.VITE_FIREBASE_STORAGE_BUCKET, env.VITE_storageBucket),
+    messagingSenderId: pick(env.VITE_FIREBASE_MESSAGING_SENDER_ID, env.VITE_messagingSenderId),
+    appId: pick(env.VITE_FIREBASE_APP_ID, env.VITE_appId),
 };
 
 // Initialize Firebase
