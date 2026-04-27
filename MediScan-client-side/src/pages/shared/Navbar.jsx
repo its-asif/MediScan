@@ -74,7 +74,7 @@ const Navbar = () => {
                             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-primary-content font-black shadow-lg shadow-primary/20">M</span>
                             <span className="text-left leading-tight">
                                 <span className="block text-sm font-semibold uppercase tracking-[0.24em] text-primary">MediScan</span>
-                                <span className="block text-xs text-base-content/70">Diagnostic care, simplified</span>
+                                <span className="block text-xs text-base-content/70">Diagnostic care</span>
                             </span>
                         </Link>
                     </div>
