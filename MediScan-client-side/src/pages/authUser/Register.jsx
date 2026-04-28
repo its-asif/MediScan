@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { set, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthProvider";
@@ -165,7 +165,7 @@ const Register = () => {
                 <select className="select select-bordered w-full" {...register("district", { required: true })} name="district" onChange={(e) => setDistrictId(e.target.selectedIndex.toString())}>
                     <option disabled="disabled" selected="selected">Select District</option>
                     {
-                        districts.map( district => <option id="district.id" value={district.name}
+                        districts.map( district => <option key={district.id} id="district.id" value={district.name}
                         >{district.name}</option>)
                     }
                 </select>
@@ -180,7 +180,7 @@ const Register = () => {
                     <select className="select select-bordered w-full" {...register("upazila", { required: true })} name="upazila">
                         <option disabled="disabled" selected="selected">Select Upazila</option>
                         {
-                            upazilas.map( upazila => <option value={upazila.name}
+                            upazilas.map( upazila => <option key={upazila.id} value={upazila.name}
                             >{upazila.name}</option>)
                         }
                     </select>
@@ -235,7 +235,7 @@ const Register = () => {
                     confirmPass !== watch('password') ? 
                     <div className="form-control mt-6">
                         <input  className="btn btn-primary" type="submit" value="Register"/>
-                        <span className="text-red-600 text-sm">* Passwords Don't Match</span>
+                        <span className="text-red-600 text-sm">* Passwords Don&apos;t Match</span>
                     </div>
                     :
                     <div className="form-control mt-6">
