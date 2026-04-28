@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 
-const ThemeContext = createContext(null);
+export const ThemeContext = createContext(null);
 const STORAGE_KEY = 'mediscan-theme';
 
 function getInitialTheme() {
@@ -35,4 +36,6 @@ export const ThemeProvider = ({ children }) => {
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export const useTheme = () => useContext(ThemeContext);
+ThemeProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};

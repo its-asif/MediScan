@@ -6,7 +6,7 @@ const useAppointmentsByEmail = () => {
     const axiosSecure = useAxiosSecure();
     const {user} = useAuth();
     
-    const { data : appointments = [], isLoading, error, refetch } = useQuery({
+    const { data : appointments = [], refetch } = useQuery({
         queryKey: ['appointments'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/payments/${user?.email}`);

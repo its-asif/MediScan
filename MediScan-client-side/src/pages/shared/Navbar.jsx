@@ -4,7 +4,7 @@ import { AuthContext } from '../../provider/AuthProvider';
 import useAdmin from '../../hooks/useAdmin';
 import useActiveStatus from '../../hooks/useActiveStatus';
 import Swal from 'sweetalert2';
-import { useTheme } from '../../provider/ThemeProvider';
+import useTheme from '../../hooks/useTheme';
 
 const Navbar = () => {
     const {user, logout, loading} = useContext(AuthContext);

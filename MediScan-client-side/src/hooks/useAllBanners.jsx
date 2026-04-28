@@ -9,7 +9,7 @@ const useAllBanners = () => {
             queryKey: ['banners'],
             queryFn: async () => {
                 const res = await axiosSecure.get('/banners');
-                const data = res.data.map(banner => {
+                return res.data.map(banner => {
                     return {
                         _id: banner._id,
                         title: banner.title,
@@ -18,10 +18,8 @@ const useAllBanners = () => {
                         active: banner.active,
                     }    
                 })
-                // return res.data;
             },
         })
-        console.log(banners);
 
     return [banners, refetch, bannersLoading];
 };

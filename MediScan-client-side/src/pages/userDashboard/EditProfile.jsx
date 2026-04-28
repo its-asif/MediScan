@@ -1,5 +1,5 @@
 // Import necessary libraries
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
@@ -18,11 +18,12 @@ const EditProfile = () => {
     });
 
     useEffect(() => {
+        if (!email) return;
         axiosSecure.get(`/users/${email}`)
             .then(res => {
                 setUserData(res.data[0]);
             })
-    }, [user, email]);
+    }, [axiosSecure, email]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

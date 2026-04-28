@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import {  createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { createContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import app from '../firebase/firebase.config';
 import useAxiosPublic from '../hooks/useAxiosPublic';
 
@@ -64,7 +65,7 @@ const AuthProvider = ({children}) => {
         return () =>{
             return unsubscribe();
         }
-     }, [axiosPublic]);
+    }, [auth, axiosPublic]);
 
     const authInfo = {
         user, loading, createUser, signIn, logout, updateUserProfile
@@ -77,6 +78,10 @@ const AuthProvider = ({children}) => {
             </AuthContext.Provider>
         </div>
     );
+};
+
+AuthProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export default AuthProvider;

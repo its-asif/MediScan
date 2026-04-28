@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
@@ -21,7 +21,7 @@ const MyProfile = () => {
           setUserData(res.data[0] || {});
         }).catch(() => setUserData({}))
         .finally(() => setUserDataLoading(false));
-    }, [email]);
+    }, [axiosSecure, email]);
 
     if(loading){
         return <progress className="progress w-56"></progress>
