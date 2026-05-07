@@ -272,4 +272,14 @@ router.patch('/payments/:id', validateObjectIdParam('id'), verifyToken, async (r
   } catch (e) { next(e); }
 });
 
+// Expose helpers on the router object for unit testing without changing the runtime behavior
+router._test = {
+  isAdminEmail,
+  findPaymentOwnerEmail,
+  verifySelfOrAdmin,
+  verifyPaymentOwnerOrAdmin,
+  buildPaymentTestLookupPipeline,
+  getPaymentsWithTests,
+};
+
 module.exports = router;

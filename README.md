@@ -92,3 +92,23 @@ nodemon start
 
 
 Feel free to ask if you have any further requests or modifications!
+
+## Testing (server)
+
+To run the server test suite (Jest + Supertest) and produce a coverage report, run these commands in the `MediScan-server` directory:
+
+```bash
+cd MediScan-server
+npm install
+npm test
+```
+
+Summary of the current test run:
+
+- Wrote: 17 server tests (unit/integration mix)
+- Coverage: Statements 76.56%, Branches 57.57%, Functions 85.71%, Lines 77.95%
+
+Notes:
+- Tests are located under `MediScan-server/test/`.
+- The coverage numbers reflect the backend modules exercised by the current suite (auth, validation, payments). Expanding tests to cover admin/owner branches and additional routes will raise coverage.
+
